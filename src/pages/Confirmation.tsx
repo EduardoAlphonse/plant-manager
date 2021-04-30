@@ -33,7 +33,7 @@ export function Confirmation() {
         <View style={styles.buttonContainer}>
           <Button
             title='Começar'
-            onPress={() => navigate('Welcome')}
+            onPress={() => navigate('PlantSelection')}
           />
         </View>
       </View>

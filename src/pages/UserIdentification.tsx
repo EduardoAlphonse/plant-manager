@@ -46,7 +46,7 @@ export function UserIdentification() {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.form}>
             <Text style={styles.emoji}>
-              {isFilled ? '😄' : '😃'}
+              {isFilled ? '🌿' : '🌱'}
             </Text>
 
             <Text style={styles.title}>

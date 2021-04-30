@@ -9,6 +9,7 @@ export default {
   body_light: '#AAB2AD',
 
   background: '#FFFFFF',
+  shape1: '#F5FAF7',
   shape: '#F0F0F0',
   white: '#FFFFFF',
   gray: '#CFCFCF',
