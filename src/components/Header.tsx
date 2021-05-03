@@ -5,6 +5,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getGithubUser } from '../services/getGithubUser';
 
@@ -16,21 +17,29 @@ interface UserData {
   avatar: string;
 }
 
-interface HeaderProps {
-  username: string;
-}
-
-export function Header({ username }: HeaderProps) {
+export function Header() {
   const [user, setUser] = useState<UserData>();
 
   useEffect(() => {
-    async function getAndSetUser(username: string) {
-      const userData = await getGithubUser(username);
-      setUser(userData);
+    async function getUserFromLocalStorage() {
+      const username = await AsyncStorage.getItem('@plantmanager:username');
+      setUser({
+        name: username || '',
+        avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
+      });
     }
 
-    getAndSetUser(username);
+    getUserFromLocalStorage();
   }, []);
+
+  // useEffect(() => {
+  //   async function getAndSetUser(username: string) {
+  //     const userData = await getGithubUser(username);
+  //     setUser(userData);
+  //   }
+
+  //   getAndSetUser(username);
+  // }, []);
 
   return (
     <View style={styles.container}>

@@ -45,21 +45,24 @@ export function PlantSelection() {
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [loadedAll, setLoadedAll] = useState(false);
+
+  const { navigate } = useNavigation();
 
   function handleEnvironmentSelection(environmentKey: string) {
     setSelectedEnvironment(environmentKey);
   }
 
   function handleFetchMore(distance: number) {
-    console.log('distance', distance);
-    console.log('page', page);
     if (distance < 1)
       return
 
     setLoadingMore(true);
     setPage(oldValue => oldValue + 1);
     getPlants();
+  }
+
+  function handlePlantSelection(plant: Plant) {
+    navigate('PlantSave', { plant });
   }
 
   async function getPlants() {
@@ -116,7 +119,7 @@ export function PlantSelection() {
 
   return (
     <View style={styles.container}>
-      <Header username='EduardoAlphonse' />
+      <Header />
       <Text style={styles.strong}>Em qual ambiente</Text>
       <Text style={styles.text}>você quer colocar sua planta?</Text>
       <View>
@@ -129,6 +132,7 @@ export function PlantSelection() {
               onPress={() => handleEnvironmentSelection(item.key)}
             />
           )}
+          keyExtractor={(item) => item.key}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.environmentList}
@@ -139,9 +143,12 @@ export function PlantSelection() {
         <FlatList
           data={filteredPlants}
           renderItem={({ item }) => (
-            <PlantCardPrimary plant={item} />
+            <PlantCardPrimary
+              plant={item}
+              onPress={() => handlePlantSelection(item)}
+            />
           )}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => String(item.id)}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.plantsList}
           numColumns={2}
