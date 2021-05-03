@@ -33,7 +33,6 @@ export function WaterInfoCard({ waterTip }: WaterInfoCardProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
     borderRadius: 20,

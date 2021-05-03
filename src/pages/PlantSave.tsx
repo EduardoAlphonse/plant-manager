@@ -4,13 +4,11 @@ import {
   Text,
   Alert,
   StyleSheet,
-  Image,
-  ScrollView,
   Platform,
   TouchableOpacity
 } from 'react-native';
 import { SvgFromUri } from 'react-native-svg';
-import { useRoute } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/core'
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 
 import { Button } from '../components/Button';
@@ -20,24 +18,17 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import { format, isBefore } from 'date-fns';
 
+import { PlantProps, savePlant, loadPlants } from '../libs/storage';
+
 interface PlantParams {
-  plant: {
-    id: 1,
-    name: string;
-    about: string;
-    water_tips: string;
-    photo: string;
-    environments: string[];
-    frequency: {
-      times: number;
-      repeat_every: string;
-    }
-  }
+  plant: PlantProps;
 }
 
 export function PlantSave() {
   const [selectedDateTime, setSelectedDateTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
+
+  const { navigate } = useNavigation();
 
   const route = useRoute();
   const { plant } = route.params as PlantParams;
@@ -54,6 +45,25 @@ export function PlantSave() {
 
     if (dateTime) {
       setSelectedDateTime(dateTime);
+    }
+  }
+
+  async function handleSavePlant() {
+    try {
+      await savePlant({
+        ...plant,
+        dateTimeNotification: selectedDateTime,
+      });
+
+      navigate('Confirmation', {
+        title: 'Tudo certo',
+        subtitle: 'Fique tranquilo que sempre vamos lembrar você de cuidar da sua plantinha com bastante amor.',
+        buttonTitle: 'Muito obrigado :D',
+        icon: 'hug',
+        nextScreen: 'MyPlants',
+      });
+    } catch {
+      Alert.alert('Não foi possível salvar 😢');
     }
   }
 
@@ -97,14 +107,14 @@ export function PlantSave() {
             style={styles.dateTimePickerButton}
           >
             <Text style={styles.dateTimePickerText}>
-              {format(selectedDateTime, 'HH:mm')}
+              {format(selectedDateTime, 'HH:mm')}''
             </Text>
           </TouchableOpacity>
         }
 
         <Button
           title='Cadastrar planta'
-          onPress={() => { }}
+          onPress={handleSavePlant}
         />
       </View>
 
