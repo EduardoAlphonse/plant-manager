@@ -13,7 +13,7 @@ import { WaterInfoCard } from '../components/WaterInfoCard';
 import { PlantCardSecondary } from '../components/PlantCardSecondary';
 import { Loading } from '../components/Loading';
 
-import { loadPlants, PlantProps } from '../libs/storage';
+import { loadPlants, PlantProps, removePlant } from '../libs/storage';
 
 import fonts from '../styles/fonts';
 import colors from '../styles/colors';
@@ -23,6 +23,31 @@ export function MyPlants() {
   const [plants, setPlants] = useState<PlantProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [nextWatered, setNextWatered] = useState<string>();
+
+  function handleRemove(plant: PlantProps) {
+    Alert.alert('Remover', `Deseja remover ${plant.name}?`, [
+      {
+        text: 'Não 🙏',
+        style: 'cancel'
+      },
+      {
+        text: 'Sim 😐',
+        onPress: async () => {
+          try {
+            await removePlant(plant.id);
+
+            setPlants(oldData =>
+              oldData.filter(data => data.id !== plant.id)
+            );
+
+          } catch (error) {
+            Alert.alert('Houve um erro ao tentar deletar a planta 😭');
+          }
+        },
+        style: 'destructive',
+      }
+    ])
+  }
 
   useEffect(() => {
     async function loadStorageData() {
@@ -46,13 +71,6 @@ export function MyPlants() {
 
     setLoading(false);
     loadStorageData();
-  }, []);
-
-  useEffect(() => {
-    async function loadMyPlants() {
-      const loadedPlants = await loadPlants();
-
-    }
   }, []);
 
   if (loading)
@@ -81,7 +99,10 @@ export function MyPlants() {
         data={plants}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <PlantCardSecondary plant={item} />
+          <PlantCardSecondary
+            plant={item}
+            handleRemove={() => handleRemove(item)}
+          />
         )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.plantCardsContainer}
