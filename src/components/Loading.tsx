@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import loadingAnimation from '../assets/load.json';
 
 export function Loading() {
-  useEffect(() => {
-
-  }, []);
-
   return (
     <View style={styles.animationContainer}>
       <LottieView

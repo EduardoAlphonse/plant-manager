@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  Image,
   View,
   Text,
   FlatList,
+  Alert
 } from 'react-native';
 import { formatDistance } from 'date-fns';
 
 import { Header } from '../components/Header';
 import { WaterInfoCard } from '../components/WaterInfoCard';
 import { PlantCardSecondary } from '../components/PlantCardSecondary';
+import { Loading } from '../components/Loading';
 
 import { loadPlants, PlantProps } from '../libs/storage';
 
@@ -25,22 +26,46 @@ export function MyPlants() {
 
   useEffect(() => {
     async function loadStorageData() {
-      const plantsStorage = await loadPlants();
+      try {
+        const plantsStorage = await loadPlants();
 
-      const timeInterval = formatDistance(
-        new Date(plantsStorage[0].dateTimeNotification).getTime(),
-        new Date().getTime(),
-        { locale: ptBR }
-      );
+        if (plantsStorage.length !== 0) {
+          const timeInterval = formatDistance(
+            new Date(plantsStorage[0].dateTimeNotification).getTime(),
+            new Date().getTime(),
+            { locale: ptBR }
+          );
 
-      setNextWatered(`Regue sua ${plantsStorage[0].name} em ${timeInterval}.`);
-
-      setPlants(plantsStorage);
-      setLoading(false);
+          setNextWatered(`Regue sua ${plantsStorage[0].name} em ${timeInterval}.`);
+          setPlants(plantsStorage);
+        }
+      } catch {
+        Alert.alert('Houve um erro ao carregar suas plantas 😥');
+      }
     }
 
+    setLoading(false);
     loadStorageData();
   }, []);
+
+  useEffect(() => {
+    async function loadMyPlants() {
+      const loadedPlants = await loadPlants();
+
+    }
+  }, []);
+
+  if (loading)
+    return <Loading />
+
+  if (plants.length === 0)
+    return (
+      <View style={styles.noPlantsContainer}>
+        <Text style={styles.title}>
+          Não há plantas cadastradas.
+        </Text>
+      </View>
+    )
 
   return (
     <View style={styles.container}>
@@ -56,13 +81,7 @@ export function MyPlants() {
         data={plants}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <PlantCardSecondary
-            plant={{
-              name: item.name,
-              photo: item.photo,
-              dateTimeNotification: item.dateTimeNotification,
-            }}
-          />
+          <PlantCardSecondary plant={item} />
         )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.plantCardsContainer}
@@ -88,5 +107,11 @@ const styles = StyleSheet.create({
   },
   plantCardsContainer: {
     paddingHorizontal: 32,
+  },
+
+  noPlantsContainer: {
+    flex: 1,
+    paddingTop: 80,
+    justifyContent: 'space-between',
   },
 })

@@ -15,8 +15,8 @@ interface PlantCardSecondaryProps extends RectButtonProps {
   plant: {
     name: string;
     photo: string;
+    hour: string;
     dateTimeNotification: Date;
-
   }
 }
 
