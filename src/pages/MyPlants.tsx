@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   plantCardsContainer: {
-    paddingHorizontal: 32,
+    paddingRight: 32,
   },
 
   noPlantsContainer: {

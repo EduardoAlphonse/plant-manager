@@ -7,14 +7,16 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { getGithubUser } from '../services/getGithubUser';
+// import { getGithubUser } from '../services/getGithubUser';
+
+import profilePhoto from '../assets/avatar.jpg';
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 interface UserData {
   name: string;
-  avatar: string;
+  // avatar: string;
 }
 
 export function Header() {
@@ -25,7 +27,7 @@ export function Header() {
       const username = await AsyncStorage.getItem('@plantmanager:username');
       setUser({
         name: username || '',
-        avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
+        // avatar: 'https://avatars.githubusercontent.com/u/43072438?v=4',
       });
     }
 
@@ -49,7 +51,7 @@ export function Header() {
           <Text style={styles.name}>{user?.name}</Text>
         </View>
 
-        <Image source={{ uri: user?.avatar }} style={styles.avatar} />
+        <Image source={profilePhoto} style={styles.avatar} />
       </View>
     </View>
   )

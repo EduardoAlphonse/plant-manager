@@ -45,38 +45,48 @@ export function PlantCardSecondary({
         </Animated.View>
       )}
     >
-      <RectButton
-        style={styles.container}
-        {...rest}
-      >
-        <View style={styles.plant}>
-          <SvgFromUri
-            uri={plant.photo}
-            width={40}
-            height={40}
-          />
-          <Text
-            style={styles.name}
-          >
-            {plant.name}
-          </Text>
-        </View>
+      <View style={styles.leftSquareContainer}>
+        <View style={styles.leftSquare} />
+        <RectButton
+          style={styles.container}
+          {...rest}
+        >
+          <View style={styles.plant}>
+            <SvgFromUri
+              uri={plant.photo}
+              width={40}
+              height={40}
+            />
+            <Text
+              style={styles.name}
+            >
+              {plant.name}
+            </Text>
+          </View>
 
-        <View style={styles.time}>
-          <Text style={styles.title}>
-            Regar às
-          </Text>
-          <Text style={styles.hour}>
-            {format(new Date(plant.dateTimeNotification), 'HH:mm')}
-          </Text>
-        </View>
-      </RectButton>
+          <View style={styles.time}>
+            <Text style={styles.title}>
+              Regar às
+            </Text>
+            <Text style={styles.hour}>
+              {format(new Date(plant.dateTimeNotification), 'HH:mm')}
+            </Text>
+          </View>
+        </RectButton>
+      </View>
     </Swipeable>
   )
 }
 
 const styles = StyleSheet.create({
+  leftSquareContainer: {
+    flexDirection: 'row',
+  },
+  leftSquare: {
+    width: 32,
+  },
   container: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
