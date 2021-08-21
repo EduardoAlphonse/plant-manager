@@ -5,7 +5,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "server": "json-server src/services/server.json -w -H 192.168.2.109 -d 750 -p 3333",
+    "server": "json-server src/services/server.json -w -H 192.168.2.103 -d 750 -p 3333",
     "eject": "expo eject"
   },
   "dependencies": {

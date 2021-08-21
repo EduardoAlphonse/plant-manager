@@ -30,6 +30,9 @@
     },
     "androidNavigationBar": {
       "backgroundColor": "#00000000"
+    },
+    "notification": {
+      "icon": "./assets/favicon.png"
     }
   }
 }

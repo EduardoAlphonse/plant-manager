@@ -7,7 +7,7 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-  }),
+  })
 });
 
 export interface PlantProps {
@@ -61,7 +61,8 @@ export async function savePlant(plant: PlantProps): Promise<void> {
         },
       },
       trigger: {
-        seconds: seconds < 60 ? 60 : seconds,
+        // seconds: seconds < 60 ? 60 : seconds,
+        seconds: 10,
         repeats: true,
       },
     });
